@@ -4,7 +4,7 @@ import V from './timeline_v2.json';
 import {img, prog, ease, easeOut, easeIn, lerp, clamp, W, H} from '../lib';
 import {Profile, tileScreen} from '../ui/Profile';
 import {Env, Grade, Stage, Card} from '../Stage';
-import {HE_FONT, HE_SERIF, UI_FONT} from '../fonts';
+import {HE_FONT, UI_FONT} from '../fonts';
 import {useFonts} from '../Main';
 import {pose} from '../lib';
 
@@ -254,7 +254,7 @@ const Story2: React.FC = () => {
     else {z = 150 - rel * 2100; op = 1 - clamp(-rel * 2.2); blur = clamp(-rel * 30, 0, 12);}
     if (i === 0) z += (1 - enter) * 1400;
     const side = i % 2 === 0 ? -1 : 1;
-    const p = pose({x: side * clamp(rel, 0, 1.2) * 170, y: -70 - clamp(rel, 0, 2) * 30, z, ry: -side * clamp(rel, 0, 1) * 16, w: 1000, h: 667, op});
+    const p = pose({x: side * clamp(rel, 0, 1.2) * 170, y: -190 - clamp(rel, 0, 2) * 30, z, ry: -side * clamp(rel, 0, 1) * 16, w: 1000, h: 667, op});
     return {i, p, blur};
   }).sort((a, b) => a.p.z - b.p.z);
   return (
@@ -290,7 +290,7 @@ const Story3: React.FC = () => {
     <AbsoluteFill style={{background: '#eee', filter: sat < 1 ? `grayscale(${1 - sat})` : undefined}}>
       <Full src={src} s={1.3} blur={30} filter="brightness(1.08)" />
       <AbsoluteFill style={{background: 'rgba(255,255,255,0.18)'}} />
-      <div style={{position: 'absolute', left: 0, top: 900 - 405, width: 1080, height: 810, transform: `translateX(${dir * (1 - pt) * 90}px) scale(${sc})`, boxShadow: '0 50px 120px rgba(0,0,0,0.35)'}}>
+      <div style={{position: 'absolute', left: 0, top: 770 - 405, width: 1080, height: 810, transform: `translateX(${dir * (1 - pt) * 90}px) scale(${sc})`, boxShadow: '0 50px 120px rgba(0,0,0,0.35)'}}>
         <Img src={img(src)} style={{width: '100%', height: '100%', objectFit: 'cover', filter: rgb || undefined}} />
       </div>
       <Flash a={flashAt(f, t0, 3) * (k === 0 ? 0 : 0.5)} />
@@ -325,7 +325,7 @@ const Finale: React.FC = () => {
       <div style={{position: 'absolute', left: 260, top: 210, width: 560, height: 261, opacity: logo, transform: `translateY(${(1 - logo) * -40}px) scale(${lerp(1.15, 1, logo)})`, filter: `blur(${(1 - logo) * 10}px) brightness(0) invert(0.93) sepia(0.25) drop-shadow(0 10px 30px rgba(0,0,0,0.6))`}}>
         <Img src={img('logo_crop.png')} style={{width: '100%', height: '100%', objectFit: 'contain'}} />
       </div>
-      <div dir="rtl" style={{position: 'absolute', top: 760, left: 60, right: 60, textAlign: 'center', fontFamily: HE_SERIF, fontWeight: 700, fontSize: 124, color: '#fff', opacity: q1, transform: `translateY(${(1 - q1) * 30}px)`, filter: `blur(${(1 - q1) * 8}px)`, textShadow: '0 6px 40px rgba(0,0,0,0.8)'}}>הסיפור הבא?</div>
+      <div dir="rtl" style={{position: 'absolute', top: 760, left: 60, right: 60, textAlign: 'center', fontFamily: HE_FONT, fontWeight: 800, fontSize: 120, letterSpacing: -1.5, color: '#fff', opacity: q1, transform: `translateY(${(1 - q1) * 30}px)`, filter: `blur(${(1 - q1) * 8}px)`, textShadow: '0 6px 40px rgba(0,0,0,0.8)'}}>הסיפור הבא?</div>
       <div dir="rtl" style={{position: 'absolute', top: 920, left: 60, right: 60, textAlign: 'center', fontFamily: HE_FONT, fontWeight: 300, fontSize: 70, color: '#f3ece2', opacity: q2, transform: `translateY(${(1 - q2) * 24}px)`, textShadow: '0 6px 30px rgba(0,0,0,0.8)'}}>יכול להיות שלכם.</div>
       <div dir="rtl" style={{position: 'absolute', top: 1120, left: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, opacity: pill, transform: `scale(${lerp(0.85, 1, pill)})`}}>
         <div style={{fontFamily: HE_FONT, fontWeight: 700, fontSize: 60, color: '#141210', background: '#f3e6cf', padding: '20px 56px', borderRadius: 80, boxShadow: '0 16px 50px rgba(0,0,0,0.5)'}}>כנסו לפרופיל</div>
@@ -339,17 +339,27 @@ const Finale: React.FC = () => {
   );
 };
 
-/* kinetic words */
+/* topic titles per post (Heebo) */
 const Words: React.FC = () => {
   const f = useCurrentFrame();
   const w = V.words.find(w => f >= w.from && f < w.to);
   if (!w) return null;
-  const a = prog(f, w.from, w.from + 8, easeOut), out = prog(f, w.to - 6, w.to, easeIn);
+  const a = prog(f, w.from, w.from + 9, easeOut), b2 = prog(f, w.from + 7, w.from + 16, easeOut), out = prog(f, w.to - 6, w.to, easeIn);
+  const line = prog(f, w.from + 2, w.from + 14, easeOut);
+  const vis = 1 - out;
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
-      <AbsoluteFill style={{background: 'linear-gradient(180deg, transparent 52%, rgba(0,0,0,0.55) 80%, rgba(0,0,0,0.6) 100%)', opacity: a * (1 - out)}} />
-      <div dir="rtl" style={{position: 'absolute', top: 1230, left: 0, right: 0, textAlign: 'center', fontFamily: HE_SERIF, fontWeight: 700, fontSize: 168, color: '#fff',
-        letterSpacing: lerp(30, 2, a), opacity: a * (1 - out), transform: `scale(${lerp(1.18, 1, a) * lerp(1, 0.94, out)})`, filter: `blur(${(1 - a) * 12 + out * 10}px)`, textShadow: '0 8px 50px rgba(0,0,0,0.7)'}}>{w.text}</div>
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.6) 74%, rgba(0,0,0,0.7) 100%)', opacity: a * vis}} />
+      <div dir="rtl" style={{position: 'absolute', top: 1190, right: 90, left: 90, fontFamily: HE_FONT, color: '#fff', textAlign: 'right', opacity: vis, textShadow: '0 6px 40px rgba(0,0,0,0.65)'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 18, opacity: a}}>
+          <span style={{fontFamily: UI_FONT, fontSize: 34, fontWeight: 600, letterSpacing: 4, color: '#f3e6cf'}}>{w.n}</span>
+          <span style={{height: 3, width: 140 * line, background: '#f3e6cf', borderRadius: 2}} />
+        </div>
+        <div style={{overflow: 'hidden', paddingBottom: 6}}>
+          <div style={{fontSize: w.title.length > 14 ? 92 : 104, fontWeight: 800, letterSpacing: -1.5, lineHeight: 1.12, transform: `translateY(${(1 - a) * 110}%)`}}>{w.title}</div>
+        </div>
+        <div style={{fontSize: 56, fontWeight: 300, marginTop: 4, opacity: b2, transform: `translateY(${(1 - b2) * 20}px)`, filter: `blur(${(1 - b2) * 6}px)`}}>{w.sub}</div>
+      </div>
     </AbsoluteFill>
   );
 };
