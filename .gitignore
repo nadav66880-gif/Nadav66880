@@ -8,3 +8,8 @@ production/public/posts/
 production/public/ui/
 production/public/logo*.png
 *.mp4
+# rendered videos contain client photos: not pushed (repo may be public)
+deliverables/
+*.wav
+*.jpg
+!production/public/**/*.jpg
