@@ -358,7 +358,7 @@ const Words: React.FC = () => {
         <div style={{overflow: 'hidden', paddingBottom: 6}}>
           <div style={{fontSize: w.title.length > 14 ? 92 : 104, fontWeight: 800, letterSpacing: -1.5, lineHeight: 1.12, transform: `translateY(${(1 - a) * 110}%)`}}>{w.title}</div>
         </div>
-        <div style={{fontSize: 56, fontWeight: 300, marginTop: 4, opacity: b2, transform: `translateY(${(1 - b2) * 20}px)`, filter: `blur(${(1 - b2) * 6}px)`}}>{w.sub}</div>
+        <div style={{fontSize: 54, fontWeight: 300, marginTop: 4, lineHeight: 1.25, opacity: b2, transform: `translateY(${(1 - b2) * 20}px)`, filter: `blur(${(1 - b2) * 6}px)`}}>{w.sub}</div>
       </div>
     </AbsoluteFill>
   );
