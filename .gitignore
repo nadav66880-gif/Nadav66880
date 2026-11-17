@@ -13,3 +13,4 @@ deliverables/
 *.wav
 *.jpg
 !production/public/**/*.jpg
+*.zip
