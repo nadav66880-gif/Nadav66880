@@ -10,10 +10,10 @@ import {pose} from '../lib';
 
 export const V2 = V;
 export const SCROLL_A = 616, SCROLL_B = 2029;
-const logLerp = (a: number, b: number, t: number) => Math.exp(lerp(Math.log(a), Math.log(b), t));
-const shake = (f: number, at: number, amp: number) => (f < at ? 0 : amp * Math.exp(-(f - at) / 4) * Math.sin((f - at) * 2.3));
-const flashAt = (f: number, at: number, len = 7) => (f < at ? 0 : Math.max(0, 1 - (f - at) / len));
-const tileC = (key: string, scroll: number) => {
+export const logLerp = (a: number, b: number, t: number) => Math.exp(lerp(Math.log(a), Math.log(b), t));
+export const shake = (f: number, at: number, amp: number) => (f < at ? 0 : amp * Math.exp(-(f - at) / 4) * Math.sin((f - at) * 2.3));
+export const flashAt = (f: number, at: number, len = 7) => (f < at ? 0 : Math.max(0, 1 - (f - at) / len));
+export const tileC = (key: string, scroll: number) => {
   const r = tileScreen(key, scroll);
   return {x: r.x + r.w / 2, y: r.y + r.h / 2, h: r.h, w: r.w};
 };
@@ -21,9 +21,9 @@ const tileC = (key: string, scroll: number) => {
 /* ------------------------------------------------------------------ */
 /* Profile as a physical screen the camera flies over                  */
 /* ------------------------------------------------------------------ */
-type Cam = {cx: number; cy: number; s: number; rx?: number; ry?: number; rz?: number};
-type Ov = {key: string; src: string; op: number; pos?: string; crop?: number[]}; // crop = [x, y, w, h] of the photo area in source px
-const PlaneCam: React.FC<{cam: Cam; prev?: Cam; scroll: number; vblur?: number; overlays?: Ov[]; dim?: number}> = ({cam, prev, scroll, vblur = 0, overlays = [], dim = 0}) => {
+export type Cam = {cx: number; cy: number; s: number; rx?: number; ry?: number; rz?: number};
+export type Ov = {key: string; src: string; op: number; pos?: string; crop?: number[]}; // crop = [x, y, w, h] of the photo area in source px
+export const PlaneCam: React.FC<{cam: Cam; prev?: Cam; scroll: number; vblur?: number; overlays?: Ov[]; dim?: number}> = ({cam, prev, scroll, vblur = 0, overlays = [], dim = 0}) => {
   const {cx, cy, s, rx = 0, ry = 0, rz = 0} = cam;
   // zoom motion blur from camera velocity
   const v = prev ? Math.abs(Math.log(s) - Math.log(prev.s)) * 30 + Math.hypot(cx - prev.cx, cy - prev.cy) * s / 160 : 0;
@@ -52,17 +52,17 @@ const PlaneCam: React.FC<{cam: Cam; prev?: Cam; scroll: number; vblur?: number; 
 };
 
 /* full-bleed photo */
-const Full: React.FC<{src: string; pos?: string; s?: number; x?: number; y?: number; rot?: number; blur?: number; filter?: string; op?: number}> = ({src, pos = '50% 50%', s = 1, x = 0, y = 0, rot = 0, blur = 0, filter = '', op = 1}) => (
+export const Full: React.FC<{src: string; pos?: string; s?: number; x?: number; y?: number; rot?: number; blur?: number; filter?: string; op?: number}> = ({src, pos = '50% 50%', s = 1, x = 0, y = 0, rot = 0, blur = 0, filter = '', op = 1}) => (
   <Img src={img(src)} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: pos, opacity: op,
     transform: `translate(${x}px, ${y}px) scale(${s}) rotate(${rot}deg)`, filter: `${blur > 0.3 ? `blur(${blur.toFixed(1)}px)` : ''} ${filter}`.trim() || undefined}} />
 );
-const LightLeak: React.FC<{f: number; at: number; dur?: number; color?: string; y?: number}> = ({f, at, dur = 20, color = 'rgba(255,150,60,0.85)', y = 40}) => {
+export const LightLeak: React.FC<{f: number; at: number; dur?: number; color?: string; y?: number}> = ({f, at, dur = 20, color = 'rgba(255,150,60,0.85)', y = 40}) => {
   const t = (f - at) / dur;
   if (t < 0 || t > 1) return null;
   const a = Math.sin(Math.PI * t);
   return <AbsoluteFill style={{mixBlendMode: 'screen', opacity: a * 0.75, background: `radial-gradient(55% 40% at ${lerp(-10, 110, t)}% ${y}%, ${color}, transparent 70%)`}} />;
 };
-const Flash: React.FC<{a: number; color?: string}> = ({a, color = '#fff'}) => (a > 0.001 ? <AbsoluteFill style={{background: color, opacity: a}} /> : null);
+export const Flash: React.FC<{a: number; color?: string}> = ({a, color = '#fff'}) => (a > 0.001 ? <AbsoluteFill style={{background: color, opacity: a}} /> : null);
 
 /* ------------------------------------------------------------------ */
 /* 1. HOOK — ring close-up, heartbeat push, shutter, photo revealed    */
