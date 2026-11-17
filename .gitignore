@@ -1,0 +1,9 @@
+source/
+production/node_modules/
+production/out/
+production/audio/*.wav
+production/audio/vo/
+# client photos & screen-recording crops: not pushed (repo may be public)
+production/public/posts/
+production/public/ui/
+production/public/logo*.png
